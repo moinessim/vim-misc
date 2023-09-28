@@ -4,7 +4,7 @@ set encoding=utf-8
 "----------------------------------------------------------------------
 " Basic Options
 "----------------------------------------------------------------------
-let mapleader=";"         " The <leader> key
+let mapleader=" "         " The <leader> key
 set autoread              " Reload files that have not been modified
 set backspace=2           " Makes backspace behave like you'd expect
 set colorcolumn=80        " Highlight 80 character limit
@@ -92,22 +92,6 @@ endif
 "----------------------------------------------------------------------
 " Key Mappings
 "----------------------------------------------------------------------
-" Remap a key sequence in insert mode to kick me out to normal
-" mode. This makes it so this key sequence can never be typed
-" again in insert mode, so it has to be unique.
-inoremap jj <esc>
-inoremap jJ <esc>
-inoremap Jj <esc>
-inoremap JJ <esc>
-inoremap jk <esc>
-inoremap jK <esc>
-inoremap Jk <esc>
-inoremap JK <esc>
-
-" Make j/k visual down and up instead of whole lines. This makes word
-" wrapping a lot more pleasent.
-map j gj
-map k gk
 
 " cd to the directory containing the file in the buffer. Both the local
 " and global flavors.
@@ -155,19 +139,6 @@ cnoremap %% <C-R>=expand('%:h').'/'<CR>
 " Buffer management
 nnoremap <leader>d   :bd<cr>
 
-" Terminal mode
-if has("nvim")
-    tnoremap <esc> <C-\><C-n>
-    tnoremap jj <C-\><C-n>
-    tnoremap jJ <C-\><C-n>
-    tnoremap Jj <C-\><C-n>
-    tnoremap JJ <C-\><C-n>
-    tnoremap jk <C-\><C-n>
-    tnoremap jK <C-\><C-n>
-    tnoremap Jk <C-\><C-n>
-    tnoremap JK <C-\><C-n>
-    nnoremap <Leader>c :terminal <CR>
-endif
 
 " Tabs
 nnoremap <C-t> :tabnew<CR>
