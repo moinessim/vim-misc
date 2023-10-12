@@ -94,6 +94,72 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 
 ---------------------------------------------------------------------
+-- Completion
+---------------------------------------------------------------------
+local cmp = require'cmp'
+local lspkind = require('lspkind')
+local d = { behavior = cmp.SelectBehavior.Select }
+local mapping = {
+    ['<C-k>'] = cmp.mapping.select_prev_item(d),
+    ['<C-p>'] = cmp.mapping.select_prev_item(d),
+    ['<C-j>'] = {
+        i = function()
+            if cmp.visible() then
+                cmp.select_next_item(d)
+            else cmp.complete()
+            end
+        end,
+    },
+    ['<C-n>'] = cmp.mapping.select_next_item(d),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<C-l>'] = cmp.mapping.confirm({
+      behavior = cmp.ConfirmBehavior.Insert,
+      select = true,
+    }),
+  }
+cmp.setup({
+   snippet = { expand = function() end },
+   experimental = {
+       native_menu = false,
+   },
+  mapping = mapping,
+  sources = {
+    { name = 'nvim_lua' },
+    { name = 'nvim_lsp' },
+    { name = 'path' },
+    { name = 'cmdline' },
+    { name = 'buffer', keyword_length = 5, max_item_count = 5 },
+  },
+  formatting = {
+    format = function(entry, vim_item)
+      vim_item.kind = lspkind.presets.default[vim_item.kind] .. ' ' .. vim_item.kind
+      vim_item.menu = ({
+        buffer = '[Buffer]',
+        nvim_lsp = '[LSP]',
+        nvim_lua = '[Lua]',
+        path = '[Path]',
+        cmdline = '[Cmd]',
+      })[entry.source.name]
+      return vim_item
+    end,
+  },
+})
+cmp.setup.cmdline(':', {
+  mapping = mapping,
+  sources = cmp.config.sources({
+    { name = 'path' },
+    { name = 'cmdline' },
+  })
+})
+cmp.setup.cmdline({'/','?'}, {
+  mapping = mapping,
+  sources = cmp.config.sources({
+    { name = 'buffer' },
+  })
+})
+
+---------------------------------------------------------------------
 -- Treesitter
 ---------------------------------------------------------------------
 require'nvim-treesitter.configs'.setup {
