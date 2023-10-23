@@ -130,6 +130,10 @@ local mapping = {
       behavior = cmp.ConfirmBehavior.Insert,
       select = true,
     }),
+    ['<CR>'] = cmp.mapping.confirm({
+      behavior = cmp.ConfirmBehavior.Insert,
+      select = false,
+    }),
   }
 cmp.setup({
    snippet = { expand = function() end },
@@ -138,11 +142,10 @@ cmp.setup({
    },
   mapping = mapping,
   sources = {
-    { name = 'nvim_lua' },
     { name = 'nvim_lsp' },
     { name = 'path' },
-    { name = 'cmdline' },
     { name = 'buffer', keyword_length = 5, max_item_count = 5 },
+    { name = 'nvim_lua', max_item_count = 5 },
   },
   formatting = {
     format = function(entry, vim_item)
