@@ -17,6 +17,7 @@ let g:colors_name="onehalfdark"
 let colors_name="onehalfdark"
 
 
+let s:pitch_black = { "gui": "#000000", "cterm": "0" }
 let s:black       = { "gui": "#282c34", "cterm": "236" }
 let s:red         = { "gui": "#e06c75", "cterm": "168" }
 let s:green       = { "gui": "#98c379", "cterm": "114" }
@@ -130,6 +131,7 @@ call s:h("Character", s:green, "", "")
 call s:h("Number", s:yellow, "", "")
 call s:h("Boolean", s:yellow, "", "")
 call s:h("Float", s:yellow, "", "")
+call s:h("NormalFloat", s:fg, s:pitch_black, "")
 
 call s:h("Identifier", s:red, "", "")
 call s:h("Function", s:blue, "", "")
