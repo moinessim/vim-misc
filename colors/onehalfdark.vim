@@ -231,3 +231,15 @@ hi link gitcommitUnmergedArrow gitcommitUnmergedFile
     call s:h("WinSeparator", s:comment_fg, "", "")
   endif
   " }
+
+" Force black background for NormalFloat windows {
+    function! s:force_black_background()
+    if &background == "dark"
+      hi NormalFloat guibg=s:pitch_black.gui ctermbg=0
+    endif
+    endfunction
+    augroup OneHalfDark
+        autocmd!
+        autocmd ColorScheme * call s:force_black_background()
+    augroup END
+" }
