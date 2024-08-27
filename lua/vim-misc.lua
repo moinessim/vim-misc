@@ -242,4 +242,7 @@ dap.listeners.before.event_exited.dapui_config = function()
   ui.close()
 end
 
-
+-- Eval var under cursor
+vim.keymap.set("n", "<space>?", function()
+    require("dapui").eval(nil, { enter = true })
+end)
