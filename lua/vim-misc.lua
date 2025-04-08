@@ -37,15 +37,15 @@ vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 
-local trouble = require("trouble.sources.telescope")
+local trouble_telescope = require("trouble.sources.telescope")
 
 local telescope = require("telescope")
 
 telescope.setup {
   defaults = {
     mappings = {
-      i = { ["<c-t>"] = trouble.open },
-      n = { ["<c-t>"] = trouble.open },
+      i = { ["<c-t>"] = trouble_telescope.open },
+      n = { ["<c-t>"] = trouble_telescope.open },
     },
   },
 }
@@ -193,12 +193,36 @@ require('Comment').setup()
 -- Trouble
 ---------------------------------------------------------------------
 
-vim.keymap.set("n", "<leader>xx", function() require("trouble").toggle() end)
-vim.keymap.set("n", "<leader>xw", function() require("trouble").toggle("workspace_diagnostics") end)
-vim.keymap.set("n", "<leader>xd", function() require("trouble").toggle("document_diagnostics") end)
+require("trouble").setup {
+  modes = {
+    -- Diagnostics for the current buffer only
+    diagnostics_buffer = {
+      mode = "diagnostics", -- inherit from diagnostics mode
+      filter = { buf = 0 }, -- filter diagnostics to the current buffer
+    },
+    cascade = {
+      mode = "diagnostics", -- inherit from diagnostics mode
+      filter = function(items)
+        local severity = vim.diagnostic.severity.HINT
+        for _, item in ipairs(items) do
+          severity = math.min(severity, item.severity)
+        end
+        return vim.tbl_filter(function(item)
+          return item.severity == severity
+        end, items)
+      end,
+    },
+  }
+}
+
+
+vim.keymap.set("n", "<leader>xx", function() require("trouble").toggle("cascade") end)
+vim.keymap.set("n", "<leader>xw", function() require("trouble").toggle("diagnostics") end)
+vim.keymap.set("n", "<leader>xd", function() require("trouble").toggle("diagnostics_buffer") end)
 vim.keymap.set("n", "<leader>xq", function() require("trouble").toggle("quickfix") end)
 vim.keymap.set("n", "<leader>xl", function() require("trouble").toggle("loclist") end)
 vim.keymap.set("n", "gR", function() require("trouble").toggle("lsp_references") end)
+vim.keymap.set("n", "gl", function() require("trouble").toggle("lsp") end)
 
 ---------------------------------------------------------------------
 -- Debugging DAP keybindings
